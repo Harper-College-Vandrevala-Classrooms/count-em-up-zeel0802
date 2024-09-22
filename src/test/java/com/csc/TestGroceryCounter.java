@@ -10,47 +10,49 @@ public class TestGroceryCounter {
 
     @BeforeEach
     void setUp() {
+        // Initialize counter before each test
         counter = new GroceryCounter();
     }
 
     @Test
-    void testInitialTotal() {
-        assertEquals("$00.00", counter.total());  // Expected output for initial value
+    void testDefaultConstructor() {
+        // Test that the default constructor initializes to $00.00
+        assertEquals("$00.00", counter.total());
     }
 
     @Test
-    void testIncrementTens() {
-        counter.tens();
-        counter.tens();
-        assertEquals("$20.00", counter.total());
+    void testCustomStartingValue() {
+        // Test custom starting value of $50.00
+        counter = new GroceryCounter(5000);
+        assertEquals("$50.00", counter.total());  // Should return $50.00
+        
+        // Test invalid starting value (should default to $00.00)
+        counter = new GroceryCounter(15000);  // Invalid, so should default to 0000
+        assertEquals("$00.00", counter.total());
     }
 
     @Test
-    void testIncrementOnes() {
-        counter.ones();
-        counter.ones();
-        assertEquals("$02.00", counter.total());  // Ensure leading zeros for single-digit values
-    }
+    void testIncrementMethods() {
+        // Test incrementing different places
+        counter.incrementTens();
+        assertEquals("$10.00", counter.total());
 
-    @Test
-    void testIncrementHundredths() {
-        counter.hundredths();
-        assertEquals("$00.01", counter.total());
+        counter.incrementOnes();
+        assertEquals("$11.00", counter.total());
+
+        counter.incrementTenths();
+        assertEquals("$11.10", counter.total());
+
+        counter.incrementHundredths();
+        assertEquals("$11.11", counter.total());
     }
 
     @Test
     void testOverflow() {
-        for (int i = 0; i < 100; i++) {
-            counter.ones();
-        }
-        assertEquals(1, counter.number_of_overflows());
-    }
-
-    @Test
-    void testClear() {
-        counter.tens();
-        counter.clear();
-        assertEquals("$00.00", counter.total());  // Expected output after clearing the counter
-        assertEquals(0, counter.number_of_overflows());
+        // Test overflow behavior
+        counter = new GroceryCounter(9999);  // Start at $99.99
+        counter.incrementHundredths();  // This should cause overflow
+        assertEquals("$00.00", counter.total());
+        assertEquals(1, counter.getNumberOfOverflows());
     }
 }
