@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.csc.TestGroceryCounter" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-09-22T22:55:12" hostname="ZEEL" time="0.041">
+<testsuite name="com.csc.TestGroceryCounter" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-09-23T00:46:59" hostname="ZEEL" time="0.062">
   <properties/>
-  <testcase name="testIncrementMethods()" classname="com.csc.TestGroceryCounter" time="0.03"/>
-  <testcase name="testCustomStartingValue()" classname="com.csc.TestGroceryCounter" time="0.003"/>
-  <testcase name="testOverflow()" classname="com.csc.TestGroceryCounter" time="0.001"/>
-  <testcase name="testDefaultConstructor()" classname="com.csc.TestGroceryCounter" time="0.001"/>
+  <testcase name="testClear()" classname="com.csc.TestGroceryCounter" time="0.046"/>
+  <testcase name="testCustomCounterMaximum()" classname="com.csc.TestGroceryCounter" time="0.005"/>
+  <testcase name="testInvalidMaxCounter()" classname="com.csc.TestGroceryCounter" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

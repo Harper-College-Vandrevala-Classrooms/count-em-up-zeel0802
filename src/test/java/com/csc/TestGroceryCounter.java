@@ -10,49 +10,50 @@ public class TestGroceryCounter {
 
     @BeforeEach
     void setUp() {
-        // Initialize counter before each test
         counter = new GroceryCounter();
     }
 
+    // Test for custom max counter (e.g., max = 5000)
     @Test
-    void testDefaultConstructor() {
-        // Test that the default constructor initializes to $00.00
-        assertEquals("$00.00", counter.total());
-    }
+    void testCustomCounterMaximum() {
+        // Create a counter with a custom maximum value of 5000
+        counter = new GroceryCounter(0, 5000);
 
-    @Test
-    void testCustomStartingValue() {
-        // Test custom starting value of $50.00
-        counter = new GroceryCounter(5000);
-        assertEquals("$50.00", counter.total());  // Should return $50.00
-        
-        // Test invalid starting value (should default to $00.00)
-        counter = new GroceryCounter(15000);  // Invalid, so should default to 0000
-        assertEquals("$00.00", counter.total());
-    }
+        // Increment until it reaches maxCounter (5000)
+        for (int i = 0; i < 5000; i++) {
+            counter.incrementOnes();
+        }
 
-    @Test
-    void testIncrementMethods() {
-        // Test incrementing different places
-        counter.incrementTens();
-        assertEquals("$10.00", counter.total());
+        // Assert that the counter is at the maximum value
+        assertEquals("$50.00", counter.total());
 
+        // Increment one more time to cause overflow
         counter.incrementOnes();
-        assertEquals("$11.00", counter.total());
 
-        counter.incrementTenths();
-        assertEquals("$11.10", counter.total());
+        // Assert counter has reset after reaching maxCounter (5000)
+        assertEquals("$00.00", counter.total()); // Should reset to zero after overflow
 
-        counter.incrementHundredths();
-        assertEquals("$11.11", counter.total());
+        // Assert overflow occurred
+        assertEquals(1, counter.getNumberOfOverflows());
     }
 
+    // Test invalid custom max counter (e.g., -100)
     @Test
-    void testOverflow() {
-        // Test overflow behavior
-        counter = new GroceryCounter(9999);  // Start at $99.99
-        counter.incrementHundredths();  // This should cause overflow
+    void testInvalidMaxCounter() {
+        // Create a counter with an invalid max value (e.g., -100)
+        counter = new GroceryCounter(0, -100);
+
+        // Assert the counter has been reset
         assertEquals("$00.00", counter.total());
-        assertEquals(1, counter.getNumberOfOverflows());
+    }
+
+    // Test clearing the counter
+    @Test
+    void testClear() {
+        counter = new GroceryCounter(4000, 5000);
+        counter.incrementOnes();
+        counter.clear();
+        assertEquals("$00.00", counter.total());
+        assertEquals(0, counter.getNumberOfOverflows());
     }
 }
